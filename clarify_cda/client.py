@@ -49,13 +49,12 @@ class Client(object):
         self.user_agent = (__api_lib_name__ + '/' + __version__ + '/' +
                            PYTHON_VERSION)
 
-    def get_conversation_list(self, href=None, limit=None, embed=None):
+    def get_conversation_list(self, href=None, limit=None):
 
         """Get a list of conversations.
         'href' the relative href to the conversation list to retriev. If None,
         the first conversation list will be returned.
         'limit' the maximum number of conversations to include in the result.
-        'embed' a list of entities to embed in the result.
 
         NB: providing values for 'limit', 'embed_*' will override either
         the API default or the values in the provided href.
@@ -70,13 +69,13 @@ class Client(object):
 
         j = None
         if href is None:
-            j = self._get_conversation_list_first(limit, embed)
+            j = self._get_conversation_list_first(limit)
         else:
-            j = self._get_conversation_list_next(href, limit, embed)
+            j = self._get_conversation_list_next(href, limit)
 
         return self._parse_json(j)
 
-    def _get_conversation_list_first(self, limit=None, embed=None):
+    def _get_conversation_list_first(self, limit=None):
         """Get a list of conversations.
         'limit' may be None, which implies API default.  If not None,
         must be > 1.
@@ -93,9 +92,6 @@ class Client(object):
         if limit is not None:
             fields['limit'] = limit
 
-        if embed is not None:
-            fields['embed'] = '+'.join(embed)
-
         if len(fields) > 0:
             data = fields
 
@@ -108,7 +104,7 @@ class Client(object):
 
         return result
 
-    def _get_conversation_list_next(self, href=None, limit=None, embed=None):
+    def _get_conversation_list_next(self, href=None, limit=None):
         """Get next, previous, first, last list (page) of conversations.
         'href' the href to retrieve the conversations.
         All other arguments override arguments in the href.
@@ -127,19 +123,6 @@ class Client(object):
         # Deal with limit overriding.
         if limit is not None:
             data['limit'] = limit
-
-        # Deal with embeds overriding.
-        existing_embed = data.get('embed')
-        existing_embed = existing_embed.split(' ') if existing_embed else None
-
-        if embed:
-            embed = list(set(existing_embed) | set(embed)) if \
-                existing_embed else embed
-        else:
-            embed = existing_embed
-
-        if embed is not None:
-            data['embed'] = '+'.join(embed)
 
         raw_result = self.get(path, data)
 
