@@ -1,5 +1,5 @@
 """
-.. module:: clarify_cda
+.. module:: clarify_cody
    : synopsis: 'Clarify Conversation Dynamics API client'
 """
 
@@ -15,10 +15,10 @@ except ImportError:
 
 from .errors import APIException, APIDataException
 
-from clarify_cda.constants import __version__
-from clarify_cda.constants import __api_version__
-from clarify_cda.constants import __api_lib_name__
-from clarify_cda.constants import __host__
+from clarify_cody.constants import __version__
+from clarify_cody.constants import __api_version__
+from clarify_cody.constants import __api_lib_name__
+from clarify_cody.constants import __host__
 
 
 CONVERSATIONS_PATH = 'conversations'
