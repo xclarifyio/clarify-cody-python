@@ -1,0 +1,33 @@
+{
+  "participants": [
+    {
+      "name": "",
+      "media": [
+        {
+          "url": "",
+          "audio_channel": "left"
+        }
+      ]
+    }
+  ],
+  "options": {
+    "asr": {
+      "language": "en",
+      "redact": "pci"
+    },
+    "keywords": {
+      "model": ""
+    }
+  },
+  "external_id": "123",
+  "notify_url": "",
+  "conversation_id": "a4736567-aa8e-4da8-beb0-9c61182b17fc",
+  "notify_status": "ok",
+  "notify_result": "200",
+  "notified": "2018-10-28",
+  "_links": {
+    "self": {
+      "href": "/v1/conversations/a4736567-aa8e-4da8-beb0-9c61182b17fc"
+    }
+  }
+}

@@ -381,7 +381,7 @@ class Client(object):
         else:
             data = json.dumps(data)
 
-        response = self.conn.request('POST', path, data, self._get_headers())
+        response = self.conn.request('POST', path, body=data, headers=self._get_headers())
 
         # Extract the result.
         self._last_status = response_status = response.status
@@ -436,7 +436,7 @@ class Client(object):
         else:
             data = json.dumps(data)
 
-        response = self.conn.request('PUT', path, data, self._get_headers())
+        response = self.conn.request('PUT', path, body=data, headers=self._get_headers())
 
         # Extract the result.
         self._last_status = response_status = response.status
