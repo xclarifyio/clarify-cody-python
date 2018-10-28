@@ -1,10 +1,6 @@
 import unittest
 import httpretty
 import json
-try:
-    from urllib.parse import parse_qs
-except ImportError:
-     from urlparse import parse_qs
 from clarify_cody.client import Client
 # from clarify_cody.helpers import get_embedded, get_link_href
 from . import register_uris
