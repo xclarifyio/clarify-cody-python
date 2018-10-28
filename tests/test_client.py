@@ -1,5 +1,6 @@
 import unittest
 import httpretty
+import json
 try:
     from urllib.parse import parse_qs
 except ImportError:
@@ -24,3 +25,5 @@ class TestClient(unittest.TestCase):
         conv = self.client.create_conversation(external_id="123")
         self.assertIsNotNone(conv)
         self.assertEqual(conv['external_id'], '123')
+        body = json.loads(httpretty.last_request().body.decode('utf-8'))
+        self.assertEqual(body['external_id'], '123')
