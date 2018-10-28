@@ -188,6 +188,7 @@ class Client(object):
         'external_id' can be any id
         'participants' is an array of dicts: 'name' (identifier for participant) and 'media'
         (an array of a dict: 'url' (url to the media file), 'audio_channel' ('left' | 'right' | '')
+        'options' is a dict of options
         notify_url - a webhook url to post to when processing is complete.
 
         Returns a data structure equivalent to the JSON returned by the API.
@@ -204,6 +205,8 @@ class Client(object):
             fields['external_id'] = external_id
         if participants is not None:
             fields['participants'] = participants
+        if options is not None:
+            fields['options'] = options
         if notify_url is not None:
             fields['notify_url'] = notify_url
 
