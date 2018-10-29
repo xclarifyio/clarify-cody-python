@@ -80,7 +80,9 @@ class Client(object):
         Returns a dict equivalent to the JSON returned by the API.
         If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
-        APIDataException."""
+        APIDataException.
+        Raises urllib3.exceptions.HTTPError
+        """
 
         # Argument error checking.
         assert limit is None or limit > 0
@@ -100,7 +102,9 @@ class Client(object):
         'embed' a list of entities to embed in the result.
 
         Returns the raw JSON returned by the API.
-        If the response status is not 2xx, throws an APIRequestException."""
+        If the response status is not 2xx, throws an APIRequestException.
+        Raises urllib3.exceptions.HTTPError
+        """
 
         # Prepare the data we're going to include in our query.
         path = '/' + __api_version__ + '/' + CONVERSATIONS_PATH
@@ -128,7 +132,9 @@ class Client(object):
         All other arguments override arguments in the href.
 
         Returns the raw JSON returned by the API.
-        If the response status is not 2xx, throws an APIRequestException."""
+        If the response status is not 2xx, throws an APIRequestException.
+        Raises urllib3.exceptions.HTTPError
+        """
 
         url_components = urlparse(href)
         path = url_components.path
@@ -165,6 +171,7 @@ class Client(object):
         If func returns False, the iteration is stopped.
 
         Returns the number of conversations iterated.
+        Raises urllib3.exceptions.HTTPError
         """
         has_next = True
         next_href = None  # if None, retrieves first page
@@ -208,7 +215,9 @@ class Client(object):
         Returns a data structure equivalent to the JSON returned by the API.
         If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
-        APIDataException."""
+        APIDataException.
+        Raises urllib3.exceptions.HTTPError
+        """
 
         path = '/' + __api_version__ + '/' + CONVERSATIONS_PATH
 
@@ -242,7 +251,9 @@ class Client(object):
         Returns a data structure equivalent to the JSON returned by the API.
         If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
-        APIDataException."""
+        APIDataException.
+        Raises urllib3.exceptions.HTTPError
+        """
 
         # Argument error checking.
         assert href is not None
@@ -271,7 +282,9 @@ class Client(object):
         Returns a data structure equivalent to the JSON returned by the API.
         If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
-        APIDataException."""
+        APIDataException.
+        Raises urllib3.exceptions.HTTPError
+        """
 
         # Argument error checking.
         assert external_id is not None
@@ -303,6 +316,7 @@ class Client(object):
         :type href: string, may not be None
         :return: nothing
         :raises APIRequestException: If the response code is not 204.
+        Raises urllib3.exceptions.HTTPError
         """
 
         # Argument error checking.
@@ -322,7 +336,9 @@ class Client(object):
 
         If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
-        APIDataException."""
+        APIDataException.
+        Raises urllib3.exceptions.HTTPError
+        """
 
         # Argument error checking.
         assert href is not None
@@ -360,6 +376,7 @@ class Client(object):
         Returns a named tuple that includes:
         status: the HTTP status code
         json: the returned JSON-HAL
+        Raises urllib3.exceptions.HTTPError
         """
 
         # Argument error checking.
@@ -382,6 +399,7 @@ class Client(object):
         Returns a named tuple that includes:
         status: the HTTP status code
         json: the returned JSON-HAL
+        Raises urllib3.exceptions.HTTPError
         """
 
         # Argument error checking.
@@ -410,6 +428,7 @@ class Client(object):
         Returns a named tuple that includes:
         status: the HTTP status code
         json: the returned JSON-HAL
+        Raises urllib3.exceptions.HTTPError
         """
 
         # Argument error checking.
@@ -435,6 +454,7 @@ class Client(object):
         Returns a named tuple that includes:
         status: the HTTP status code
         json: the returned JSON-HAL
+        Raises urllib3.exceptions.HTTPError
         """
 
         # Argument error checking.
