@@ -48,12 +48,18 @@ class Client(object):
             host = host[8:]
             tls = True
 
+        port = None
+        i = host.find(':')
+        if i >= 0:
+            port = int(host[i + 1:])
+            host = host[:i]
+
         if tls:
-            self.conn = urllib3.HTTPSConnectionPool(host, maxsize=1,
+            self.conn = urllib3.HTTPSConnectionPool(host, port=port, maxsize=1,
                                                     cert_reqs='CERT_REQUIRED',
                                                     ca_certs=certifi.where())
         else:
-            self.conn = urllib3.HTTPConnectionPool(host, maxsize=1)
+            self.conn = urllib3.HTTPConnectionPool(host, port=port, maxsize=1)
 
         self._last_status = None
         self.user_agent = (__api_lib_name__ + '/' + __version__ + '/' + PYTHON_VERSION)
