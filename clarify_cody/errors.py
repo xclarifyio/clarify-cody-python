@@ -46,7 +46,7 @@ class APIRequestException(APIException):
 
         result = ''
         if self._data_struct is not None:
-            result = self._data_struct[KEY_STATUS]
+            result = self._data_struct.get(KEY_STATUS, 'No status')
         return result
 
     def get_message(self):
@@ -55,7 +55,7 @@ class APIRequestException(APIException):
 
         result = ''
         if self._data_struct is not None:
-            result = self._data_struct[KEY_MESSAGE]
+            result = self._data_struct.get(KEY_MESSAGE, 'No message')
         return result
 
     def get_code(self):
@@ -65,7 +65,7 @@ class APIRequestException(APIException):
 
         result = ''
         if self._data_struct is not None:
-            result = self._data_struct[KEY_CODE]
+            result = self._data_struct.get(KEY_CODE, 'No code')
         return result
 
 
