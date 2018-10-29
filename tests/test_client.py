@@ -3,14 +3,14 @@ import httpretty
 import json
 from clarify_cody.client import Client
 # from clarify_cody.helpers import get_embedded, get_link_href
-from . import register_uris
+from . import register_uris, host
 
 
 class TestClient(unittest.TestCase):
 
     def setUp(self):
         api_key = 'my-api-key'
-        self.client = Client(api_key)
+        self.client = Client(api_key, host)
 
     def tearDown(self):
         self.client = None

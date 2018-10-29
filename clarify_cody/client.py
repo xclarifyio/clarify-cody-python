@@ -33,10 +33,20 @@ class Client(object):
     """Holds the environment."""
 
     def __init__(self, key, host=None, tls=True):
+        """
+        host can be a hostname or host:port or https://host:port
+        """
         self.key = key
 
         if host is None:
             host = __host__
+
+        if host.find('http://') == 0:
+            host = host[7:]
+            tls = False
+        elif host.find('https://') == 0:
+            host = host[8:]
+            tls = True
 
         if tls:
             self.conn = urllib3.HTTPSConnectionPool(host, maxsize=1,
