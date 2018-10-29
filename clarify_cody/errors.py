@@ -10,6 +10,11 @@ KEY_CODE = 'code'
 
 
 class APIException(Exception):
+    def get_message(self):
+        return 'API Exception'
+
+
+class APIRequestException(APIException):
     """Thown when we don't receive the expected sucess response from an
     API call."""
 
@@ -18,7 +23,7 @@ class APIException(Exception):
     json_response = None
 
     def __init__(self, http_response, json_response):
-        Exception.__init__(self)
+        APIException.__init__(self)
 
         self.http_response = http_response
         self.json_response = json_response
@@ -64,22 +69,7 @@ class APIException(Exception):
         return result
 
 
-class APIConfigurationException(Exception):
-    """Thrown when the API isn't properly configured."""
-
-    msg = None
-
-    def __init__(self, msg):
-        Exception.__init__(self)
-        self.msg = msg
-
-    def get_message(self):
-        """Returns the error message."""
-
-        return self.msg
-
-
-class APIDataException(Exception):
+class APIDataException(APIException):
     """Thown when we can't parse the data returned by an API call."""
 
     base_exception = None
@@ -91,7 +81,7 @@ class APIDataException(Exception):
         'msg' is additional information that might be valuable for
         determining the root cause of the exception."""
 
-        Exception.__init__(self)
+        APIException.__init__(self)
 
         self.base_exception = e
         self.offending_data = offending_data
@@ -109,7 +99,7 @@ class APIDataException(Exception):
 
         return self.base_exception
 
-    def get_msg(self):
+    def get_message(self):
         """Return whateve message the application programmer might have
         considered useful when throwing this exception."""
 

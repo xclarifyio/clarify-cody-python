@@ -13,7 +13,7 @@ try:
 except ImportError:
     from urlparse import urlparse, parse_qs
 
-from .errors import APIException, APIDataException
+from .errors import APIRequestException, APIDataException
 
 from clarify_cody.constants import __version__
 from clarify_cody.constants import __api_version__
@@ -56,8 +56,7 @@ class Client(object):
             self.conn = urllib3.HTTPConnectionPool(host, maxsize=1)
 
         self._last_status = None
-        self.user_agent = (__api_lib_name__ + '/' + __version__ + '/' +
-                           PYTHON_VERSION)
+        self.user_agent = (__api_lib_name__ + '/' + __version__ + '/' + PYTHON_VERSION)
 
     def get_conversation_list(self, href=None, limit=None):
 
@@ -70,7 +69,7 @@ class Client(object):
         the API default or the values in the provided href.
 
         Returns a dict equivalent to the JSON returned by the API.
-        If the response status is not 2xx, throws an APIException.
+        If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
         APIDataException."""
 
@@ -92,7 +91,7 @@ class Client(object):
         'embed' a list of entities to embed in the result.
 
         Returns the raw JSON returned by the API.
-        If the response status is not 2xx, throws an APIException."""
+        If the response status is not 2xx, throws an APIRequestException."""
 
         # Prepare the data we're going to include in our query.
         path = '/' + __api_version__ + '/' + CONVERSATIONS_PATH
@@ -108,7 +107,7 @@ class Client(object):
         raw_result = self.get(path, data)
 
         if raw_result.status < 200 or raw_result.status > 202:
-            raise APIException(raw_result.status, raw_result.json)
+            raise APIRequestException(raw_result.status, raw_result.json)
         else:
             result = raw_result.json
 
@@ -120,7 +119,7 @@ class Client(object):
         All other arguments override arguments in the href.
 
         Returns the raw JSON returned by the API.
-        If the response status is not 2xx, throws an APIException."""
+        If the response status is not 2xx, throws an APIRequestException."""
 
         url_components = urlparse(href)
         path = url_components.path
@@ -137,11 +136,7 @@ class Client(object):
         raw_result = self.get(path, data)
 
         if raw_result.status < 200 or raw_result.status > 202:
-            print('*****')
-            print(raw_result.status)
-            print(raw_result.json)
-            print('*****')
-            raise APIException(raw_result.status, raw_result.json)
+            raise APIRequestException(raw_result.status, raw_result.json)
         else:
             result = raw_result.json
 
@@ -202,7 +197,7 @@ class Client(object):
         notify_url - a webhook url to post to when processing is complete.
 
         Returns a data structure equivalent to the JSON returned by the API.
-        If the response status is not 2xx, throws an APIException.
+        If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
         APIDataException."""
 
@@ -226,7 +221,7 @@ class Client(object):
         raw_result = self.post(path, data)
 
         if raw_result.status < 200 or raw_result.status > 202:
-            raise APIException(raw_result.status, raw_result.json)
+            raise APIRequestException(raw_result.status, raw_result.json)
 
         return self._parse_json(raw_result.json)
 
@@ -236,7 +231,7 @@ class Client(object):
         'embed' a list of entities to embed in the result.
 
         Returns a data structure equivalent to the JSON returned by the API.
-        If the response status is not 2xx, throws an APIException.
+        If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
         APIDataException."""
 
@@ -255,7 +250,7 @@ class Client(object):
         raw_result = self.get(href, data)
 
         if raw_result.status < 200 or raw_result.status > 202:
-            raise APIException(raw_result.status, raw_result.json)
+            raise APIRequestException(raw_result.status, raw_result.json)
 
         return self._parse_json(raw_result.json)
 
@@ -265,7 +260,7 @@ class Client(object):
         'embed' a list of entities to embed in the result.
 
         Returns a data structure equivalent to the JSON returned by the API.
-        If the response status is not 2xx, throws an APIException.
+        If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
         APIDataException."""
 
@@ -288,7 +283,7 @@ class Client(object):
         raw_result = self.get(path, data)
 
         if raw_result.status < 200 or raw_result.status > 202:
-            raise APIException(raw_result.status, raw_result.json)
+            raise APIRequestException(raw_result.status, raw_result.json)
 
         return self._parse_json(raw_result.json)
 
@@ -298,7 +293,7 @@ class Client(object):
         :param href: the relative href to the conversation.
         :type href: string, may not be None
         :return: nothing
-        :raises APIException: If the response code is not 204.
+        :raises APIRequestException: If the response code is not 204.
         """
 
         # Argument error checking.
@@ -307,7 +302,7 @@ class Client(object):
         raw_result = self.delete(href)
 
         if raw_result.status != 204:
-            raise APIException(raw_result.status, raw_result.json)
+            raise APIRequestException(raw_result.status, raw_result.json)
 
     def _get_simple_model(self, href=None):
         """Get a model
@@ -316,7 +311,7 @@ class Client(object):
         Returns a data structure equivalent to the JSON returned by the
         API.
 
-        If the response status is not 2xx, throws an APIException.
+        If the response status is not 2xx, throws an APIRequestException.
         If the JSON to python data struct conversion fails, throws an
         APIDataException."""
 
@@ -326,7 +321,7 @@ class Client(object):
         raw_result = self.get(href)
 
         if raw_result.status < 200 or raw_result.status > 202:
-            raise APIException(raw_result.status, raw_result.json)
+            raise APIRequestException(raw_result.status, raw_result.json)
 
         return self._parse_json(raw_result.json)
 
@@ -356,7 +351,7 @@ class Client(object):
         Returns a named tuple that includes:
         status: the HTTP status code
         json: the returned JSON-HAL
-        If the key was not set, throws an APIConfigurationException."""
+        """
 
         # Argument error checking.
         assert path is not None
@@ -378,8 +373,7 @@ class Client(object):
         Returns a named tuple that includes:
         status: the HTTP status code
         json: the returned JSON-HAL
-
-        If the key was not set, throws an APIConfigurationException."""
+        """
 
         # Argument error checking.
         assert path is not None
@@ -407,8 +401,7 @@ class Client(object):
         Returns a named tuple that includes:
         status: the HTTP status code
         json: the returned JSON-HAL
-
-        If the key was not set, throws an APIConfigurationException."""
+        """
 
         # Argument error checking.
         assert path is not None
@@ -433,8 +426,7 @@ class Client(object):
         Returns a named tuple that includes:
         status: the HTTP status code
         json: the returned JSON-HAL
-
-        If the key was not set, throws an APIConfigurationException."""
+        """
 
         # Argument error checking.
         assert path is not None
