@@ -32,20 +32,23 @@ PYTHON_VERSION = '.'.join(str(i) for i in sys.version_info[:3])
 class Client(object):
     """Holds the environment."""
 
-    def __init__(self, key, host=None, tls=True):
+    def __init__(self, key, url=None):
         """
-        host can be a hostname or host:port or https://host:port
+        url can be https://host:port or hostname or host:port
         """
         self.key = key
 
-        if host is None:
-            host = __host__
+        if url is None:
+            url = __host__
 
-        if host.find('http://') == 0:
-            host = host[7:]
+        if url.find('http://') == 0:
+            host = url[7:]
             tls = False
-        elif host.find('https://') == 0:
-            host = host[8:]
+        elif url.find('https://') == 0:
+            host = url[8:]
+            tls = True
+        else:
+            host = url
             tls = True
 
         port = None
