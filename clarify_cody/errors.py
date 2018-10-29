@@ -10,8 +10,8 @@ KEY_CODE = 'code'
 
 
 class APIException(Exception):
-    def get_message(self):
-        return 'API Exception'
+    def __str__(self):
+        return 'APIException'
 
 
 class APIRequestException(APIException):
@@ -35,6 +35,9 @@ class APIRequestException(APIException):
         except ValueError:
             pass
 
+    def __str__(self):
+        return self.get_message()
+
     def get_http_response(self):
         """Return the HTTP response that caused this exception to be
         thrown."""
@@ -53,7 +56,7 @@ class APIRequestException(APIException):
         """Return the message embedded in the JSON error response body,
         or an empty string if the JSON couldn't be parsed."""
 
-        result = ''
+        result = 'No message'
         if self._data_struct is not None:
             result = self._data_struct.get(KEY_MESSAGE, 'No message')
         return result
@@ -86,6 +89,9 @@ class APIDataException(APIException):
         self.base_exception = e
         self.offending_data = offending_data
         self.msg = msg
+
+    def __str__(self):
+        return self.get_message()
 
     def get_offending_data(self):
         """Returns the JSON data that caused the exception to be thrown
