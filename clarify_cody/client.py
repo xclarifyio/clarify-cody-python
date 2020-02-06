@@ -74,7 +74,7 @@ class Client(object):
         the first conversation list will be returned.
         'limit' the maximum number of conversations to include in the result.
 
-        NB: providing values for 'limit', 'embed_*' will override either
+        NB: providing values for 'limit' will override either
         the API default or the values in the provided href.
 
         Returns a dict equivalent to the JSON returned by the API.
@@ -99,7 +99,6 @@ class Client(object):
         """Get a list of conversations.
         'limit' may be None, which implies API default.  If not None,
         must be > 1.
-        'embed' a list of entities to embed in the result.
 
         Returns the raw JSON returned by the API.
         If the response status is not 2xx, throws an APIRequestException.
@@ -262,7 +261,10 @@ class Client(object):
         fields = {}
 
         if embed is not None:
-            fields['embed'] = '+'.join(embed)
+            if isinstance(embed, str):
+                fields['embed'] = embed
+            else:
+                fields['embed'] = '+'.join(embed)
 
         if len(fields) > 0:
             data = fields
@@ -297,7 +299,10 @@ class Client(object):
         }
 
         if embed is not None:
-            fields['embed'] = '+'.join(embed)
+            if isinstance(embed, str):
+                fields['embed'] = embed
+            else:
+                fields['embed'] = '+'.join(embed)
 
         if len(fields) > 0:
             data = fields
