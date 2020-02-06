@@ -67,7 +67,7 @@ def get_embedded(result_object, link_relation):
 
     result = None
 
-    embedded_object = result_object['_embedded']
+    embedded_object = result_object.get('_embedded')
     if embedded_object:
         result = embedded_object.get(link_relation)
 
