@@ -7,6 +7,7 @@ import json
 KEY_STATUS = 'status'
 KEY_MESSAGE = 'message'
 KEY_CODE = 'code'
+KEY_ERRORS = 'errors'
 
 
 class APIException(Exception):
@@ -69,6 +70,15 @@ class APIRequestException(APIException):
         result = ''
         if self._data_struct is not None:
             result = self._data_struct.get(KEY_CODE, 'No code')
+        return result
+
+    def get_errors(self):
+        """Return a list of dicts containing info about the error,
+        or None if none available."""
+
+        result = None
+        if self._data_struct is not None:
+            result = self._data_struct.get(KEY_ERRORS)
         return result
 
 
