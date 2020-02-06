@@ -34,15 +34,16 @@ def fetch_transcripts(url, count):
 
     def process_conv(client, conversation_href):
         nonlocal processed
-        processed += 1
-        if processed > count:
-            return False
 
         conv = client.get_conversation(conversation_href, embed=['insight:transcript'])
         transcript = get_embedded(conv, 'insight:transcript')
         if transcript is not None:
+            print(conversation_href)
             output_transcript(transcript)
 
+            processed += 1
+            if processed >= count:
+                return False
     try:
         client = Client(API_KEY, url)
         client.conversation_list_map(process_conv)
